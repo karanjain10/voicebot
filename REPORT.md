@@ -1,6 +1,6 @@
 # Voice-Enabled Chatbot using Speech Recognition and Deep Learning
 
-**Live link:** <PASTE HUGGING FACE SPACE URL>  |  **Source:** https://github.com/karanjain10/voicebot
+**Live link:** https://adiag1205-voicebot.static.hf.space  |  **Source:** https://github.com/karanjain10/voicebot
 
 ## 1. Objective
 A publicly hosted chatbot that takes spoken input, converts it to text, classifies the user's intent with a neural network, and replies in text and synthesized speech. Both the recognized speech and the reply are shown on screen.
@@ -35,4 +35,4 @@ The shipped model is retrained on all 161 samples. Spot checks through the live 
 - No dialogue memory; each message is classified independently. The weather intent has no live data.
 
 ## 7. Deployment
-Dockerized Flask app (gunicorn) on Hugging Face Spaces (Docker SDK, port 7860); the model is trained during image build. HTTPS is provided by the platform, which the microphone API requires.
+Hosted free on a Hugging Face **static Space** (HTTPS, required by the microphone API): https://huggingface.co/spaces/adiag1205/voicebot. Free tiers do not offer a Python server, so `export_web.py` exports the trained PyTorch weights to `model.json` and the same forward pass runs in the browser in JavaScript (parity-checked against PyTorch on sample inputs). The Flask + Docker server version (`app.py`, `Dockerfile`, `render.yaml`) is kept in the repository for server-side hosting. First load of the site can take up to 1 minute.

@@ -31,12 +31,20 @@ button.rec{background:#c0392b}
 const $=id=>document.getElementById(id),log=$("log"),status=$("status");
 function add(cls,text,note){const d=document.createElement("div");d.className="m "+cls;d.textContent=text;
   if(note){const s=document.createElement("small");s.textContent=note;d.append(s)}log.append(d);log.scrollTop=log.scrollHeight}
+let M;const modelP=fetch("model.json").then(r=>r.json()).then(m=>M=m);
+function tok(t){const w=t.toLowerCase().match(/[a-z']+/g)||[];return w.concat(w.slice(1).map((x,i)=>w[i]+"_"+x))}
+function classify(text){
+  let x=new Array(Object.keys(M.vocab).length).fill(0);for(const t of tok(text))if(t in M.vocab)x[M.vocab[t]]=1;
+  M.layers.forEach(([W,b],k)=>{x=W.map((r,i)=>r.reduce((s,v,j)=>s+v*x[j],b[i]));if(k<2)x=x.map(v=>Math.max(0,v))});
+  const mx=Math.max(...x),e=x.map(v=>Math.exp(v-mx)),z=e.reduce((a,b)=>a+b),p=e.map(v=>v/z),i=p.indexOf(Math.max(...p));
+  if(p[i]<0.55||!text.trim())return{intent:"unknown",confidence:p[i],response:"Sorry, I didn't understand that. Try asking for a joke, the time or my name."};
+  const tag=M.tags[i],rs=M.responses[tag],n=new Date();
+  const r=rs[Math.floor(Math.random()*rs.length)].replace("__TIME__","It's "+n.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+".").replace("__DATE__","Today is "+n.toLocaleDateString([],{weekday:"long",day:"numeric",month:"long",year:"numeric"})+".");
+  return{intent:tag,confidence:p[i],response:r}}
 async function ask(text){
-  if(!text.trim())return;add("u",text);
-  try{const r=await(await fetch("/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text})})).json();
-    add("b",r.response,`intent: ${r.intent} · confidence ${(r.confidence*100).toFixed(0)}%`);
-    speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(r.response));
-  }catch(e){add("b","Server unreachable.")}
+  if(!text.trim())return;add("u",text);await modelP;const r=classify(text);
+  add("b",r.response,`intent: ${r.intent} · confidence ${(r.confidence*100).toFixed(0)}%`);
+  speechSynthesis.cancel();speechSynthesis.speak(new SpeechSynthesisUtterance(r.response));
 }
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 if(!SR){$("mic").disabled=true;status.textContent="Speech recognition isn't supported in this browser. Use Chrome, Edge or Safari, or type."}
