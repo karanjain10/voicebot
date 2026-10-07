@@ -363,7 +363,12 @@
     "what is tokenization",
     "how do chatbots understand text",
     "what is a language model",
-    "what is computational linguistics"
+    "what is computational linguistics",
+    "what is SLP",
+    "what is speech and language processing",
+    "explain speech and language processing",
+    "tell me about SLP",
+    "what is language technology"
    ],
    "responses": [
     "Natural language processing (NLP) is the field of getting computers to work with human language: tokenizing text, classifying intent, translating, summarizing and more. This bot does intent classification."
@@ -385,6 +390,31 @@
    ],
    "responses": [
     "Artificial intelligence is the field of building systems that perform tasks that normally need human intelligence, such as understanding speech, recognizing images or making decisions. Machine learning is its most successful approach today."
+   ]
+  },
+  {
+   "tag": "ai_comparison",
+   "patterns": [
+    "what is the difference between machine learning and deep learning",
+    "tell me the difference between machine learning and deep learning",
+    "difference between AI and machine learning",
+    "how is AI different from machine learning",
+    "machine learning versus deep learning",
+    "compare machine learning deep learning and NLP",
+    "tell me the difference between machine learning speech language processing and deep learning",
+    "what is the difference between deep learning and neural networks",
+    "how are AI machine learning and deep learning related",
+    "difference between NLP and machine learning",
+    "tell me the difference between machine learning deep learning and SLP",
+    "is deep learning the same as machine learning",
+    "how does speech recognition differ from NLP",
+    "compare AI ML and deep learning",
+    "what is the relationship between AI and deep learning",
+    "explain how machine learning and deep learning differ",
+    "difference between speech recognition and natural language processing"
+   ],
+   "responses": [
+    "They nest: AI is the broad goal, machine learning is learning from data to reach it, and deep learning is machine learning with many-layered neural networks. NLP and speech recognition are applications that mostly use deep learning today."
    ]
   }
  ]
