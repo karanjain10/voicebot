@@ -1,6 +1,6 @@
 # Voice-Enabled Chatbot using Speech Recognition and Deep Learning
 
-**Live link:** <PASTE HUGGING FACE SPACE URL>  |  **Source:** <PASTE REPO/SPACE FILES URL>
+**Live link:** <PASTE HUGGING FACE SPACE URL>  |  **Source:** https://github.com/karanjain10/voicebot
 
 ## 1. Objective
 A publicly hosted chatbot that takes spoken input, converts it to text, classifies the user's intent with a neural network, and replies in text and synthesized speech. Both the recognized speech and the reply are shown on screen.
