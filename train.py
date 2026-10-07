@@ -15,7 +15,7 @@ def fit(data, epochs=300):
     opt = torch.optim.Adam(m.parameters(), lr=3e-3)
     for _ in range(epochs):
         m.train(); opt.zero_grad()
-        nn.functional.cross_entropy(m(X), y).backward(); opt.step()
+        nn.functional.cross_entropy(m(X), y, label_smoothing=0.1).backward(); opt.step()
     return m.eval()
 
 def acc(m, data):

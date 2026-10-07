@@ -17,19 +17,20 @@ def reply(text):
     with torch.no_grad():
         p = torch.softmax(net(torch.tensor(bow(text, vocab))[None]), 1)[0]
     c, i = p.max(0)
+    top = [[tags[int(j)], round(float(v), 3)] for v, j in zip(*p.topk(3))]
     if c < CONF_MIN or not text.strip():
-        return "unknown", float(c), "Sorry, I didn't understand that. Try asking for a joke, the time or my name."
+        return "unknown", float(c), "Sorry, I didn't understand that. Try asking for a joke, the time or my name.", top
     tag = tags[int(i)]
     r = random.choice(responses[tag])
     now = datetime.now()
     r = r.replace("__TIME__", now.strftime("It's %I:%M %p.")).replace("__DATE__", now.strftime("Today is %A, %d %B %Y."))
-    return tag, float(c), r
+    return tag, float(c), r, top
 
 @app.post("/chat")
 def chat():
     text = (request.get_json(silent=True) or {}).get("text", "")[:300]
-    tag, conf, r = reply(text)
-    return jsonify(intent=tag, confidence=round(conf, 3), response=r)
+    tag, conf, r, top = reply(text)
+    return jsonify(intent=tag, confidence=round(conf, 3), response=r, top=top)
 
 @app.get("/")
 def index():
